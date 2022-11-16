@@ -42,7 +42,7 @@ class JsonResponse extends Response
     public function fail($data = [], $message = 'fail', $statusCode = 400)
     {
         return response()->json([
-            'status' => true,
+            'status' => false,
             'message' => $message,
             'data' => $data
         ], $statusCode);
