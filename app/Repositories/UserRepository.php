@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\Auth\InvalidLoginException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -90,5 +91,24 @@ class UserRepository
     {
         $user = $this->getByUsername($username);
         return $user->delete();
+    }
+
+    public function checkPasswordMatch(User $user, string $inputPassword)
+    {
+        return Hash::check($inputPassword, $user->password);
+    }
+
+    public function generateToken(User $user)
+    {
+        return $token = $user->createToken(config('app.name'))->plainTextToken;
+    }
+
+    public function login(array $data)
+    {
+        $user = $this->getByUsername($data['username']);
+        if ($this->checkPasswordMatch($user, $data['password'])) {
+            return $this->generateToken($user);
+        }
+        throw new InvalidLoginException;
     }
 }
