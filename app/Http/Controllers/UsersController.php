@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\JsonResponse;
-use App\Http\Requests\UserStoreRequest;
-use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\User\UserStoreRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Repositories\UserRepository;
 
 class UsersController extends Controller
