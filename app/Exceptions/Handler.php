@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -45,6 +46,38 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        // format validation error response
+        $this->renderable(function (ValidationException $e, $request) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Error',
+                    'data' => [
+                        'errors' => $e->errors(),
+                    ]
+                ], 500);
+            }
+        });
+
+        // format general errors response
+        $this->renderable(function (Throwable $e, $request) {
+            if ($request->wantsJson()) {
+                $data = [
+                    'message' => $e->getMessage()
+                ];
+                if (!app()->environment('production')) {
+                    $data['file'] = $e->getFile();
+                    $data['line'] = $e->getLine();
+                    $data['trace'] = $e->getTrace();
+                }
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Error',
+                    'data' => $data ?? [],
+                ], 500);
+            }
         });
     }
 }
