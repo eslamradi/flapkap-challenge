@@ -18,18 +18,26 @@ Kindly follow the next steps in order to be able to run the application:
 
 2. if you're using a windows based system copy the `.env.example` into `.env` manually or using the command :
 
-    ```copy .env.example .env```
+    ```
+    copy .env.example .env
+    ```
 
     OR if you're using a unix/linux based system: 
     
-    ```cp .env.example .env```
+    ```
+    cp .env.example .env
+    ```
 3. build and run the docker containers defined at the `docker-compose.yml` file:
     
-    ```docker-compose build && docker-compose up -d```
+    ```
+    docker-compose build && docker-compose up -d
+    ```
 
 4. generate application key 
 
-    ```docker-compose exec app php artisan key:generate```
+    ```
+    docker-compose exec app php artisan key:generate
+    ```
 
     Now the application is available for use on http://localhost:8000
 
