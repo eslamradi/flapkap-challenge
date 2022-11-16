@@ -18,23 +18,33 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'username' => fake()->unique()->userName(),
+            'deposit' => fake()->randomElement([5, 10, 20, 50, 100]),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Indicate that the model is a seller
      *
      * @return static
      */
-    public function unverified()
+    public function seller()
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'role' => 'seller',
+        ]);
+    }
+
+    /**
+     * Indicate that the model is a buyer
+     *
+     * @return static
+     */
+    public function buyer()
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'buyer',
         ]);
     }
 }
