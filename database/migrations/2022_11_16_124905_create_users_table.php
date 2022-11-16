@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('password');
             $table->float('deposit')->default(0);
             $table->string('role');
-            $table->string('token')->nullable();
             $table->timestamps();
         });
     }

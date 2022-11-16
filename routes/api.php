@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+
+Route::prefix('user')->name('user.')->group(function () {
+    Route::get('/', [UsersController::class, 'index'])->name('list');
+    Route::post('/', [UsersController::class, 'store'])->name('store');
+    Route::get('/{username}', [UsersController::class, 'show'])->name('show');
+    Route::put('/{username}', [UsersController::class, 'update'])->name('update');
+    Route::delete('/{username}', [UsersController::class, 'delete'])->name('delete');
 });
