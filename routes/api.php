@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('register', [AuthController::class, 'register'])->name('register');
 
-Route::prefix('user')->name('user.')->group(function () {
+Route::prefix('user')->middleware(['auth:sanctum', 'role:' . Role::ADMIN])->name('user.')->group(function () {
     Route::get('/', [UsersController::class, 'index'])->name('list');
     Route::post('/', [UsersController::class, 'store'])->name('store');
     Route::get('/{username}', [UsersController::class, 'show'])->name('show');

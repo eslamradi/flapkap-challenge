@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -32,7 +33,7 @@ class UserFactory extends Factory
     public function seller()
     {
         return $this->state(fn (array $attributes) => [
-            'role' => 'seller',
+            'role' => Role::SELLER,
         ]);
     }
 
@@ -44,7 +45,19 @@ class UserFactory extends Factory
     public function buyer()
     {
         return $this->state(fn (array $attributes) => [
-            'role' => 'buyer',
+            'role' => Role::BUYER,
+        ]);
+    }
+
+    /**
+     * Indicate that the model is a admin
+     *
+     * @return static
+     */
+    public function admin()
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => Role::ADMIN,
         ]);
     }
 }

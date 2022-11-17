@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserStoreRequest extends FormRequest
@@ -26,7 +27,7 @@ class UserStoreRequest extends FormRequest
         return [
             'username' => 'required|alpha_dash|unique:users,username',
             'password' => 'required|min:8',
-            'role' => 'required|in:seller,buyer'
+            'role' => 'required|in:' . Role::SELLER . ',' . Role::BUYER,
         ];
     }
 }

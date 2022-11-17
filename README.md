@@ -38,8 +38,15 @@ Kindly follow the next steps in order to be able to run the application:
     ```
     docker-compose exec app php artisan key:generate
     ```
+5. migrate database and seed test data 
+
+    ```
+    docker-compose exec app php artisan migrate --seed
+    ```
 
     Now the application is available for use on http://localhost:8000
+
+
 
 ## stack used
 

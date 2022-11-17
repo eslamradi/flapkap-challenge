@@ -31,7 +31,7 @@ class UserUpdateRequest extends FormRequest
                 Rule::unique('users', 'username')->ignore($this->route('username'), 'username')
             ],
             'password' => 'nullable|min:8',
-            'role' => 'required|in:seller,buyer'
+            'role' => 'required|in:' . Role::SELLER . ',' . Role::BUYER,
         ];
     }
 }
