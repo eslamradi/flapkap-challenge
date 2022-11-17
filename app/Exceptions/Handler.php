@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -57,26 +58,18 @@ class Handler extends ExceptionHandler
                     'data' => [
                         'errors' => $e->errors(),
                     ]
-                ], 500);
+                ], 422);
             }
         });
 
         // format general errors response
-        $this->renderable(function (Throwable $e, $request) {
-            if ($request->wantsJson()) {
-                $data = [
-                    'message' => $e->getMessage()
-                ];
-                if (!app()->environment('production')) {
-                    $data['file'] = $e->getFile();
-                    $data['line'] = $e->getLine();
-                    $data['trace'] = $e->getTrace();
-                }
+        $this->renderable(function (HttpException $e, $request) {
+            if ($request->wantsJson() or $request->is('api*')) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Error',
-                    'data' => $data ?? [],
-                ], 500);
+                    'data' => [],
+                ], $e->getStatusCode());
             }
         });
     }
