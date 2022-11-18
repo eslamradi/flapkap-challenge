@@ -20,4 +20,9 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'sellerId');
     }
+
+    public function isAvailable()
+    {
+        return $this->amountAvailable > 0;
+    }
 }
