@@ -34,8 +34,10 @@ Route::prefix('user')->middleware(['auth:sanctum', 'role:' . Role::ADMIN])->name
 /**
  * product crud routes
  */
+
+ Route::get('product', [ProductsController::class, 'index'])->name('product.list');
+
 Route::prefix('product')->middleware(['auth:sanctum', 'role:' . Role::ADMIN])->name('product.')->group(function () {
-    Route::get('/', [ProductsController::class, 'index'])->name('list');
     Route::post('/', [ProductsController::class, 'store'])->name('store');
     Route::get('/{id}', [ProductsController::class, 'show'])->name('show');
     Route::put('/{id}', [ProductsController::class, 'update'])->name('update');
