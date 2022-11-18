@@ -79,7 +79,8 @@ class UsersController extends Controller
      */
     public function update($username, UserUpdateRequest $request)
     {
-        $user = $this->userRepository->updateByUsername($username, $request->validated());
+        $user = $this->userRepository->getByUsername($username);
+        $user = $this->userRepository->update($user, $request->validated());
         return $this->response->success($user, trans('User Updated Successfully'));
     }
 
@@ -91,7 +92,8 @@ class UsersController extends Controller
      */
     public function delete($username)
     {
-        $this->userRepository->deleteByUsername($username);
-        return $this->response->success([], trans('User Deleted Successfully'), 204);
+        $user = $this->userRepository->getByUsername($username);
+        $this->userRepository->delete($user);
+        return $this->response->success([], trans('User Deleted Successfully'), 200);
     }
 }

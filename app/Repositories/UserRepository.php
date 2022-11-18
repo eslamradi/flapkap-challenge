@@ -57,7 +57,6 @@ class UserRepository
      */
     public function create(array $data)
     {
-        $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
         return $user;
     }
@@ -69,12 +68,8 @@ class UserRepository
      * @param array $data
      * @return User
      */
-    public function updateByUsername(string $username, array $data)
+    public function update(User $user, array $data)
     {
-        $user = $this->getByUsername($username);
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
         $user->fill($data);
         $user->save();
 
@@ -87,9 +82,8 @@ class UserRepository
      * @param string $username
      * @return bool
      */
-    public function deleteByUsername(string $username)
+    public function delete(User $user)
     {
-        $user = $this->getByUsername($username);
         return $user->delete();
     }
 
