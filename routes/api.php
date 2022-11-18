@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UsersController;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
@@ -35,11 +36,28 @@ Route::prefix('user')->middleware(['auth:sanctum', 'role:' . Role::ADMIN])->name
  * product crud routes
  */
 
- Route::get('product', [ProductsController::class, 'index'])->name('product.list');
+Route::prefix('product')->name('product.')->group(function () {
+    Route::get('/', [ProductsController::class, 'index'])->name('list');
+    Route::get('/{id}', [ProductsController::class, 'show'])->name('show');
+});
 
 Route::prefix('product')->middleware(['auth:sanctum', 'role:' . Role::ADMIN])->name('product.')->group(function () {
     Route::post('/', [ProductsController::class, 'store'])->name('store');
     Route::get('/{id}', [ProductsController::class, 'show'])->name('show');
     Route::put('/{id}', [ProductsController::class, 'update'])->name('update');
     Route::delete('/{id}', [ProductsController::class, 'delete'])->name('delete');
+});
+
+
+/**
+ * seller routes
+ */
+
+Route::prefix('seller')->middleware(['auth:sanctum', 'role:' . Role::SELLER])->name('seller.')->group(function () {
+    Route::prefix('product')->middleware(['auth:sanctum', 'role:' . Role::SELLER])->name('product.')->group(function () {
+        Route::get('/', [SellerController::class, 'listProduct'])->name('list');
+        Route::post('/', [SellerController::class, 'storeProduct'])->name('store');
+        Route::put('/{id}', [SellerController::class, 'updateProduct'])->name('update');
+        Route::delete('/{id}', [SellerController::class, 'deleteProduct'])->name('delete');
+    });
 });
