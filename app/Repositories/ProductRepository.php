@@ -13,21 +13,30 @@ class ProductRepository
      *
      * @return LengthAwarePaginaroe
      */
-    public function getList()
+    public function getList(User $seller = null)
     {
-        return Product::paginate(10);
+        $products = Product::query();
+        if ($seller) {
+            $products = $products->where('sellerId', $seller->id);
+        }
+        return $products->paginate(10);
     }
 
     /**
-     * get product by its id
+     * get product by its id and seller if provided
      *
      * @param integer $id
+     * @param User $seller
      * @throws ProductNotFoundException
      * @return Product
      */
-    public function getById(int $id)
+    public function getById(int $id, User $seller = null)
     {
-        $product = Product::find($id);
+        $product = Product::where('id', $id);
+        if ($seller) {
+            $product = $product->where('sellerId', $seller->id);
+        }
+        $product = $product->first();
         if (!$product) {
             throw new ProductNotFoundException;
         }
@@ -103,5 +112,17 @@ class ProductRepository
             $product->amountAvailable = $product->amountAvailable - 1;
             $product->save();
         }
+    }
+
+    /**
+     * check if user can access/modify product
+     *
+     * @param User $user
+     * @param Product $product
+     * @return boolean
+     */
+    public function canUserAccessProduct(User $user, Product $product)
+    {
+        return $product->sellerId == $user->id;
     }
 }

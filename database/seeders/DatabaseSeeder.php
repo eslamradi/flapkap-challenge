@@ -28,7 +28,13 @@ class DatabaseSeeder extends Seeder
         $seller = User::factory()
             ->seller()
             ->create([
-                'username' => 'seller1'
+                'username' => 'seller'
+            ]);
+
+        $sellertest = User::factory()
+            ->seller()
+            ->create([
+                'username' => 'sellertest'
             ]);
 
         $products = Product::factory()
