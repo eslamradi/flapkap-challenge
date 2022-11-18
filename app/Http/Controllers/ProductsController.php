@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Product\ProductNotFoundException;
 use App\Helpers\JsonResponse;
 use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
@@ -54,8 +55,12 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = $this->productRepository->getById($id);
-        return $this->response->success(['product' => $product]);
+        try {
+            $product = $this->productRepository->getById($id);
+            return $this->response->success(['product' => $product]);
+        } catch (ProductNotFoundException $e) {
+            return $this->response->fail([], trans($e->getMessage()));
+        }
     }
 
     /**
@@ -79,9 +84,13 @@ class ProductsController extends Controller
      */
     public function update($id, ProductUpdateRequest $request)
     {
-        $product = $this->productRepository->getById($id);
-        $product = $this->productRepository->update($product, $request->validated());
-        return $this->response->success($product, trans('Product Updated Successfully'));
+        try {
+            $product = $this->productRepository->getById($id);
+            $product = $this->productRepository->update($product, $request->validated());
+            return $this->response->success($product, trans('Product Updated Successfully'));
+        } catch (ProductNotFoundException $e) {
+            return $this->response->fail([], trans($e->getMessage()));
+        }
     }
 
     /**
@@ -92,8 +101,12 @@ class ProductsController extends Controller
      */
     public function delete($id)
     {
-        $product = $this->productRepository->getById($id);
-        $this->productRepository->delete($product);
-        return $this->response->success([], trans('Product Deleted Successfully'), 200);
+        try {
+            $product = $this->productRepository->getById($id);
+            $this->productRepository->delete($product);
+            return $this->response->success([], trans('Product Deleted Successfully'), 200);
+        } catch (ProductNotFoundException $e) {
+            return $this->response->fail([], trans($e->getMessage()));
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\User\UserNotFoundException;
 use App\Helpers\JsonResponse;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
@@ -54,8 +55,12 @@ class UsersController extends Controller
      */
     public function show($username)
     {
-        $user = $this->userRepository->getByUsername($username);
-        return $this->response->success(['user' => $user]);
+        try {
+            $user = $this->userRepository->getByUsername($username);
+            return $this->response->success(['user' => $user]);
+        } catch (UserNotFoundException $e) {
+            return $this->response->fail([], trans($e->getMessage()));
+        }
     }
 
     /**
@@ -79,9 +84,13 @@ class UsersController extends Controller
      */
     public function update($username, UserUpdateRequest $request)
     {
-        $user = $this->userRepository->getByUsername($username);
-        $user = $this->userRepository->update($user, $request->validated());
-        return $this->response->success($user, trans('User Updated Successfully'));
+        try {
+            $user = $this->userRepository->getByUsername($username);
+            $user = $this->userRepository->update($user, $request->validated());
+            return $this->response->success($user, trans('User Updated Successfully'));
+        } catch (UserNotFoundException $e) {
+            return $this->response->fail([], trans($e->getMessage()));
+        }
     }
 
     /**
@@ -92,8 +101,12 @@ class UsersController extends Controller
      */
     public function delete($username)
     {
-        $user = $this->userRepository->getByUsername($username);
-        $this->userRepository->delete($user);
-        return $this->response->success([], trans('User Deleted Successfully'), 200);
+        try {
+            $user = $this->userRepository->getByUsername($username);
+            $this->userRepository->delete($user);
+            return $this->response->success([], trans('User Deleted Successfully'), 200);
+        } catch (UserNotFoundException $e) {
+            return $this->response->fail([], trans($e->getMessage()));
+        }
     }
 }
