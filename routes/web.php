@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (JsonResponse $response) {
+    return $response->success(['app' => config('app.name')]);
 });
