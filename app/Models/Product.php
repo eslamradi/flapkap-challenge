@@ -16,6 +16,10 @@ class Product extends Model
         'sellerId',
     ];
 
+    protected $with = [
+        'seller'
+    ];
+
     public function seller()
     {
         return $this->belongsTo(User::class, 'sellerId');
@@ -24,5 +28,22 @@ class Product extends Model
     public function isAvailable()
     {
         return $this->amountAvailable > 0;
+    }
+
+    public function history()
+    {
+        return $this->hasMany(History::class);
+    }
+
+    /**
+     * delete product
+     *
+     * @param string $productname
+     * @return bool
+     */
+    public function reduceStock(int $amount)
+    {
+        $this->amountAvailable = $this->amountAvailable - $amount;
+        $this->save();
     }
 }

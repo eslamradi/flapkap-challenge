@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UsersController;
@@ -61,3 +62,15 @@ Route::prefix('seller')->middleware(['auth:sanctum', 'role:' . Role::SELLER])->n
         Route::delete('/{id}', [SellerController::class, 'deleteProduct'])->name('delete');
     });
 });
+
+
+/**
+ * buyer routes
+ */
+
+
+Route::post('/deposit', [BuyerController::class, 'deposit'])->middleware(['auth:sanctum', 'role:' . ROle::BUYER])->name('deposit');
+
+Route::post('/buy', [BuyerController::class, 'buy'])->middleware(['auth:sanctum', 'role:' . ROle::BUYER])->name('buy');
+
+Route::delete('/reset', [BuyerController::class, 'reset'])->middleware(['auth:sanctum', 'role:' . ROle::BUYER])->name('reset');

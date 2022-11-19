@@ -52,4 +52,28 @@ class User extends Authenticatable
             set: fn ($value) => Hash::make($value),
         );
     }
+
+    public function history()
+    {
+        if ($this->role == Role::BUYER) {
+            return $this->hasMany(History::class);
+        }
+        return collect([]);
+    }
+
+    public function deposit(int $amount)
+    {
+        $this->deposit += $amount;
+        $this->save();
+
+        return $this->deposit;
+    }
+
+    public function deduct(int $amount)
+    {
+        $this->deposit -= $amount;
+        $this->save();
+
+        return $this->deposit;
+    }
 }

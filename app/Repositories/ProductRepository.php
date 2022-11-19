@@ -100,21 +100,6 @@ class ProductRepository
     }
 
     /**
-     * delete product
-     *
-     * @param string $productname
-     * @return bool
-     */
-    public function reduceStock(Product $product)
-    {
-
-        if ($product->isAvailable()) {
-            $product->amountAvailable = $product->amountAvailable - 1;
-            $product->save();
-        }
-    }
-
-    /**
      * check if user can access/modify product
      *
      * @param User $user

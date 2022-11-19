@@ -41,5 +41,11 @@ class DatabaseSeeder extends Seeder
             ->seller($seller)
             ->count(10)
             ->create();
+
+        $seller = User::factory()
+            ->buyer()
+            ->create([
+                'username' => 'buyer'
+            ]);
     }
 }

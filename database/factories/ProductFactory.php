@@ -19,7 +19,7 @@ class ProductFactory extends Factory
     {
         return [
             'productName' => fake()->unique()->word(),
-            'amountAvailable' => fake()->numberBetween(2, 10),
+            'amountAvailable' => fake()->numberBetween(10, 50),
             'cost' => fake()->randomElement([5, 10, 20, 50, 100]),
         ];
     }
