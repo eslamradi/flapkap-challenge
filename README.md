@@ -12,7 +12,6 @@ This project is set up to be built with docker instead of installing any softwar
 
 Kindly follow the next steps in order to be able to run the application: 
 
-> by default ports 8000, 4306 are not used by any service on your machine, if you run any services on these ports kindly stop them
 
 1. clone and cd to the root path of this repository.
 
@@ -27,6 +26,10 @@ Kindly follow the next steps in order to be able to run the application:
     ```
     cp .env.example .env
     ```
+
+    > by default ports 8000, 4306 are not used by any service on your machine, if you run any services on these ports you can change the `DOCKER_APP_PORT` and `DOCKER_DB_PORT` in `.env` file you just copied at root directory of the repository or kindly stop them
+    
+    
 3. build and run the docker containers defined at the `docker-compose.yml` file:
     
     ```
@@ -46,7 +49,7 @@ Kindly follow the next steps in order to be able to run the application:
 
     Now the application is available for use on http://localhost:8000
 
-
+    > postman collection for the progect is preset at the `Postman` directory ar repository root  
 
 ## stack used
 
