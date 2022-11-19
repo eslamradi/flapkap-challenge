@@ -25,9 +25,10 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 /**
  * users crud routes
  */
+Route::post('user/', [UsersController::class, 'store'])->name('user.store');
+
 Route::prefix('user')->middleware(['auth:sanctum', 'role:' . Role::ADMIN])->name('user.')->group(function () {
     Route::get('/', [UsersController::class, 'index'])->name('list');
-    Route::post('/', [UsersController::class, 'store'])->name('store');
     Route::get('/{username}', [UsersController::class, 'show'])->name('show');
     Route::put('/{username}', [UsersController::class, 'update'])->name('update');
     Route::delete('/{username}', [UsersController::class, 'delete'])->name('delete');
